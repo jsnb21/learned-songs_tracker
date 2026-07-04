@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getSongs, createSongs, updateSong, deleteSong } from "./api";
+import useDebounce from "./hooks/useDebounce";
 import SongList from "./components/SongList";
 import SongForm from "./components/SongForm";
 import FilterBar from "./components/FilterBar";
@@ -26,9 +27,17 @@ function App () {
       status: ""
     })
 
+    const debouncedSearch = useDebounce(filters.search, 500);
+
     async function loadSongs() {
         try {
-          const data = await getSongs(filters);
+          const currentFilters = {
+            ...filters,
+            search: debouncedSearch
+          };
+
+          const data = await getSongs(currentFilters);
+
           setSongs(data);
         } catch (err) {
           setError(err.message);
@@ -39,7 +48,11 @@ function App () {
 
     useEffect(() => {
       loadSongs();
-    }, [filters]);
+    }, [
+        filters.instrument,
+        filters.status,
+        debouncedSearch
+    ]);
 
     async function handleAddSong(songData) {
       try {
