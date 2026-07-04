@@ -17,10 +17,34 @@ app.get("/", (req, res) => {
 })
 
 app.get("/api/songs", (req, res) => {
-    const songs = db
-    .prepare("SELECT * FROM songs")
-    .all();
+    const {instrument, status, search } = req.query;
 
+    let sql = "SELECT * FROM songs";
+
+    const conditions = [];
+    const values = [];
+
+    if (instrument) {
+        conditions.push("instrument = ?");
+        values.push(instrument);
+    }
+
+    if (status) {
+        conditions.push("status = ?");
+        values.push(status);
+    }
+
+    if (search) {
+        conditions.push("(title LIKE ? COLLATE NOCASE OR artist LIKE ?) COLLATE NOCASE");
+        values.push(`%${search}%`);
+        values.push(`%${search}%`);
+    }
+
+    if (conditions.length > 0) {
+        sql += " WHERE " + conditions.join(" AND ");
+    }
+
+    const songs = db.prepare(sql).all(...values);
 
     res.json(songs);
 
