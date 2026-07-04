@@ -50,7 +50,7 @@ function SongForm({
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className="song-form" onSubmit={handleSubmit}>
             <h2>
                 {editingSong
                 ? "Edit Song"
@@ -149,7 +149,7 @@ function SongForm({
 
             <br />
 
-            <button type="submit">
+            <button className="primary-btn" type="submit">
                 {editingSong
                 ? "Update Song"
                 

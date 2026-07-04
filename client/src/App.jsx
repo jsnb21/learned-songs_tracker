@@ -116,9 +116,14 @@ function App () {
     }
 
     return (
-      <div>
-        <h1>Song Tracker</h1>
-
+      <div className="container">
+        <header className="header">
+          <h1>Song Tracker</h1>
+        <p>
+          Track your learning progress.
+        </p>
+        </header>
+        
         <FilterBar 
           filters={filters}
           setFilters={setFilters}

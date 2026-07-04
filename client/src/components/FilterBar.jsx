@@ -10,7 +10,7 @@ function FilterBar({ filters, setFilters }) {
     }
 
     return (
-    <div>
+    <div className="card">
         <h2>Filter Songs</h2>
 
         <input 
