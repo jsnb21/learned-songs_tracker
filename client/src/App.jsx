@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getSongs, createSongs, updateSong } from "./api";
+import { getSongs, createSongs, updateSong, deleteSong } from "./api";
 import SongList from "./components/SongList";
 import SongForm from "./components/SongForm";
 
@@ -18,8 +18,7 @@ function App () {
 
     const [editingSong, setEditingSong] = useState(null);
 
-    useEffect(() => {
-      async function loadSongs() {
+    async function loadSongs() {
         try {
           const data = await getSongs();
           setSongs(data);
@@ -27,9 +26,10 @@ function App () {
           setError(err.message);
         } finally {
           setLoading(false);
-        }
       }
+    }
 
+    useEffect(() => {
       loadSongs();
     }, []);
 
@@ -52,6 +52,23 @@ function App () {
       } catch (err) {
           alert(err.message);
       }
+    }
+    
+    async function handleDeleteSong(id) {
+        const confirmed = window.confirm(
+          "Are you sure you want to delete this song?"
+        );
+
+        if (!confirmed) return;
+
+        try {
+          await deleteSong(id);
+
+          await loadSongs();
+
+        } catch (err) {
+          alert(err.message);
+        }
     }
 
     if (loading) {
@@ -79,6 +96,7 @@ function App () {
         <SongList 
           songs = {songs} 
           onEdit = {setEditingSong}
+          onDelete={handleDeleteSong}
         />
       </div>
     );

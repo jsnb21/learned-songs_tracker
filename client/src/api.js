@@ -47,7 +47,7 @@ export async function deleteSong(id){
     });
 
     if (!response.ok){
-        throw new Errpr("Failed to delete song");
+        throw new Error("Failed to delete song");
     }
 
     return response.json();

@@ -1,4 +1,4 @@
-function SongCard({ song, onEdit }) {
+function SongCard({ song, onEdit, onDelete }) {
     return (
         <li style={{ marginBottom: "20px" }}>
 
@@ -34,6 +34,11 @@ function SongCard({ song, onEdit }) {
                 Edit 
             </button>
             
+            <button 
+                onClick={() => onDelete(song.id)}
+            >
+                Delete 
+            </button>
 
         </li>
     )
