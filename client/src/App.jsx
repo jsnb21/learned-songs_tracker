@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { getSongs } from "./api";
+import { getSongs, createSongs, updateSong } from "./api";
 import SongList from "./components/SongList";
+import SongForm from "./components/SongForm";
 
 function App () {
 
@@ -12,34 +13,49 @@ function App () {
 
     // Error state
     const [error, setError] = useState("");
-    
-    useEffect (() => {
 
+    // Editing state
+
+    const [editingSong, setEditingSong] = useState(null);
+
+    useEffect(() => {
       async function loadSongs() {
-        
         try {
-          
           const data = await getSongs();
-          
           setSongs(data);
         } catch (err) {
-
           setError(err.message);
-
         } finally {
-
           setLoading(false);
-
         }
-
       }
 
       loadSongs();
-
     }, []);
 
+    async function handleAddSong(songData) {
+      try {
+        await createSongs(songData);
+        const data = await getSongs();
+        setSongs(data);
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    async function handleUpdateSong(songData) {
+      try{
+        await updateSong(
+          editingSong.id,
+          songData
+        );
+      } catch (err) {
+          alert(err.message);
+      }
+    }
+
     if (loading) {
-      return <h2>Loading Songs...</h2>
+      return <h2>Loading Songs...</h2>;
     }
 
     if (error) {
@@ -48,17 +64,24 @@ function App () {
 
     return (
       <div>
-
         <h1>Song Tracker</h1>
+
+        <SongForm 
+          onAddSong={handleAddSong} 
+          editingSong={editingSong}
+          onUpdateSong={handleUpdateSong}
+        />
 
         <p>
           <strong>Total songs:</strong> {songs.length}
         </p>
 
-        <SongList songs={songs}/>
-
+        <SongList 
+          songs = {songs} 
+          onEdit = {setEditingSong}
+        />
       </div>
-    )  
+    );
 }
 
 export default App;

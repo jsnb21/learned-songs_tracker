@@ -1,6 +1,6 @@
 import SongCard from "./SongCard";
 
-function SongList({ songs }) {
+function SongList({ songs, onEdit }) {
     if (songs.length === 0) {
         return (
             <div>
@@ -16,6 +16,7 @@ function SongList({ songs }) {
                 <SongCard
                     key={song.id}
                     song={song}
+                    onEdit={onEdit}
                 />
             ))}
         </ul>

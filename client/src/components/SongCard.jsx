@@ -1,4 +1,4 @@
-function SongCard({ song }) {
+function SongCard({ song, onEdit }) {
     return (
         <li style={{ marginBottom: "20px" }}>
 
@@ -27,6 +27,13 @@ function SongCard({ song }) {
             <br />
 
             Notes: {song.notes || "None"}
+
+            <button 
+                onClick={() => onEdit(song)}
+            >
+                Edit 
+            </button>
+            
 
         </li>
     )
