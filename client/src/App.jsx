@@ -1,122 +1,87 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useEffect, useState } from "react";
+import { getSongs } from "./api";
 
-function App() {
-  const [count, setCount] = useState(0)
+function App () {
 
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    // Store songs
+    const [songs, setSongs] = useState([]);
 
-      <div className="ticks"></div>
+    // Loading state
+    const [loading, setLoading] = useState(true);
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
+    // Error state
+    const [error, setError] = useState("");
+    
+    useEffect (() => {
+
+      async function loadSongs() {
+        
+        try {
+          
+          const data = await getSongs();
+          
+          setSongs(data);
+        } catch (err) {
+
+          setError(err.message);
+
+        } finally {
+
+          setLoading(false);
+
+        }
+
+      }
+
+      loadSongs();
+
+    }, []);
+
+    if (loading) {
+      return <h2>Loading Songs...</h2>
+    }
+
+    if (error) {
+      return <h2>Error: {error}</h2>;
+    }
+
+    return (
+      <div>
+        <h1>Song Tracker</h1>
+
+        <p>Total songs: {songs.length}</p>
+
+        {songs.length === 0 ? (
+          <div>
+            <h3>No Songs yet.</h3>
+            <p>Add your first song to get started!</p>
+          </div>
+        ) : (
           <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+            {songs.map((song) => 
+              <li key={song.id}>
+                <strong>{song.title}</strong>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+                <br />
+                Artist: {song.artist}
+                <br />
+                Instrument: {song.instrument}
+                <br />
+                Status: {song.status}
+                <br />
+                Difficulty: {song.difficulty}
+                <br />
+                Date Learned: {song.date_learned || "N/A"}
+                <br />
+                Notes: {song.notes}
+              </li>
+            )}
+          </ul>
+        )}
+
+      </div>
+    )
+
 }
 
-export default App
+export default App;
