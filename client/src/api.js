@@ -1,5 +1,19 @@
-export async function getSongs(){
-    const response = await fetch("/api/songs");
+export async function getSongs(filters = {}){
+    const params = new URLSearchParams();
+
+    if(filters.search){
+        params.append("search", filters.search);
+    }
+
+    if(filters.instrument){
+        params.append("instrument", filters.instrument);
+    }
+
+    if(filters.status){
+        params.append("status", filters.status);
+    }
+
+    const response = await fetch(`/api/songs?${params.toString()}`);
 
     if (!response.ok) {
         throw new Error("Failed to fetch songs");

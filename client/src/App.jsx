@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getSongs, createSongs, updateSong, deleteSong } from "./api";
 import SongList from "./components/SongList";
 import SongForm from "./components/SongForm";
+import FilterBar from "./components/FilterBar";
 
 function App () {
 
@@ -18,9 +19,16 @@ function App () {
 
     const [editingSong, setEditingSong] = useState(null);
 
+    // Filtering
+    const [filters, setFilters] = useState({
+      search: "",
+      instrument: "",
+      status: ""
+    })
+
     async function loadSongs() {
         try {
-          const data = await getSongs();
+          const data = await getSongs(filters);
           setSongs(data);
         } catch (err) {
           setError(err.message);
@@ -31,7 +39,7 @@ function App () {
 
     useEffect(() => {
       loadSongs();
-    }, []);
+    }, [filters]);
 
     async function handleAddSong(songData) {
       try {
@@ -82,6 +90,11 @@ function App () {
     return (
       <div>
         <h1>Song Tracker</h1>
+
+        <FilterBar 
+          filters={filters}
+          setFilters={setFilters}
+        />
 
         <SongForm 
           onAddSong={handleAddSong} 
