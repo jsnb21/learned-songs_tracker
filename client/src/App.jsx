@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getSongs } from "./api";
+import SongList from "./components/SongList";
 
 function App () {
 
@@ -47,41 +48,17 @@ function App () {
 
     return (
       <div>
+
         <h1>Song Tracker</h1>
 
-        <p>Total songs: {songs.length}</p>
+        <p>
+          <strong>Total songs:</strong> {songs.length}
+        </p>
 
-        {songs.length === 0 ? (
-          <div>
-            <h3>No Songs yet.</h3>
-            <p>Add your first song to get started!</p>
-          </div>
-        ) : (
-          <ul>
-            {songs.map((song) => 
-              <li key={song.id}>
-                <strong>{song.title}</strong>
-
-                <br />
-                Artist: {song.artist}
-                <br />
-                Instrument: {song.instrument}
-                <br />
-                Status: {song.status}
-                <br />
-                Difficulty: {song.difficulty}
-                <br />
-                Date Learned: {song.date_learned || "N/A"}
-                <br />
-                Notes: {song.notes}
-              </li>
-            )}
-          </ul>
-        )}
+        <SongList songs={songs}/>
 
       </div>
-    )
-
+    )  
 }
 
 export default App;
