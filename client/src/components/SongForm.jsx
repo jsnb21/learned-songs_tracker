@@ -1,55 +1,52 @@
 import { useState, useEffect } from "react"
 
-function SongForm({ onAddSong, editingSong, onUpdateSong }) {
+const emptyForm = {
+    title: "",
+    artist: "",
+    instrument: "Guitar",
+    status: "Learning",
+    difficulty: 1,
+    date_learned: "",
+    notes: ""
+};
 
-    const [title, setTitle] = useState("");
-    const [artist, setArtist] = useState("");
-    const [instrument, setInstrument] = useState("Guitar");
-    const [status, setStatus] = useState("Learning");
-    const [difficulty, setDifficulty] = useState(1);
-    const [dateLearned, setDateLearned] = useState("");
-    const [notes, setNotes] = useState("");
+function SongForm({
+    editingSong,
+    onAddSong,
+    onUpdateSong
+}) {
 
-    useEffect(() => {
+    const [formData, setFormData] = useState(emptyForm);
+
+    // Fill form when editing
+
+    useEffect(() =>{
         if (editingSong){
-            setTitle(editingSong.title);
-            setArtist(editingSong.artist);
-            setInstrument(editingSong.instrument);
-            setStatus(editingSong.status);
-            setDifficulty(editingSong.difficulty);
-            setDateLearned(editingSong.date_learned);
-            setNotes(editingSong.notes);
+            setFormData(editingSong);
+        } else {
+            setFormData(emptyForm);
         }
     }, [editingSong]);
 
-    async function handleSubmit(event){
+    function handleChange(e){
+        const { name, value } = e.target;
 
-        event.preventDefault();
+        setFormData((prev) => ({
+            ...prev,
+            [name]: name === "difficulty" ? Number(value) : value
+        }));
+    }
 
-        const newSong = {
-            title,
-            artist,
-            instrument,
-            status,
-            difficulty,
-            date_learned: dateLearned,
-            notes
-        };
+    async function handleSubmit(e) {
+        e.preventDefault();
 
         if(editingSong){
-            await onUpdateSong(newSong);
+            await onUpdateSong(formData);
         } else {
-            await onAddSong(newSong);
+            await onAddSong(formData);
         }
 
-        // Clear Form
-        setTitle("");
-        setArtist("");
-        setInstrument("");
-        setStatus("");
-        setDifficulty(1);
-        setDateLearned("");
-        setNotes("");
+        setFormData(emptyForm);
     }
 
     return (
@@ -67,8 +64,9 @@ function SongForm({ onAddSong, editingSong, onUpdateSong }) {
                 <br />
                 <input
                     type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    name="title"
+                    value={formData.title}
+                    onChange={handleChange}
                     required
                 />
             </div>
@@ -78,8 +76,9 @@ function SongForm({ onAddSong, editingSong, onUpdateSong }) {
                 <br />
                 <input
                     type="text"
-                    value={artist}
-                    onChange={(e) => setArtist(e.target.value)}
+                    name="artist"
+                    value={formData.artist}
+                    onChange={handleChange}
                     required
                 />
             </div>
@@ -88,8 +87,9 @@ function SongForm({ onAddSong, editingSong, onUpdateSong }) {
                 <label>Instrument</label>
                 <br />
                 <select
-                    value={instrument}
-                    onChange={(e) => setInstrument(e.target.value)}
+                    name="instrument"
+                    value={formData.instrument}
+                    onChange={handleChange}
                 >
                     <option>Guitar</option>
                     <option>Bass</option>
@@ -103,8 +103,9 @@ function SongForm({ onAddSong, editingSong, onUpdateSong }) {
                 <label>Status</label>
                 <br />
                 <select
-                    value={status}
-                    onChange={(e) => setStatus(e.target.value)}
+                    name="status"
+                    value={formData.status}
+                    onChange={handleChange}
                 >
                     <option>Learning</option>
                     <option>Mastered</option>
@@ -117,10 +118,11 @@ function SongForm({ onAddSong, editingSong, onUpdateSong }) {
                 <br />
                 <input 
                     type="number"
+                    name="difficulty"
                     min="1"
                     max="5"
-                    value={difficulty}
-                    onChange={(e) => setDifficulty(Number(e.target.value))}
+                    value={formData.difficulty}
+                    onChange={handleChange}
                 />
             </div>
 
@@ -129,8 +131,9 @@ function SongForm({ onAddSong, editingSong, onUpdateSong }) {
                 <br />
                 <input
                     type="date"
-                    value={dateLearned}
-                    onChange={(e) => setDateLearned(e.target.value)}
+                    name="date_learned"
+                    value={formData.date_learned}
+                    onChange={handleChange}
                 />
             </div>
 
@@ -138,8 +141,9 @@ function SongForm({ onAddSong, editingSong, onUpdateSong }) {
                 <label>Notes</label>
                 <br />
                 <textarea
-                    value={notes}
-                    onChange={(e) => setNotes(e.target.value)}
+                    name="notes"
+                    value={formData.notes}
+                    onChange={handleChange}
                 />
             </div>
 
