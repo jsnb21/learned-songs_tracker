@@ -56,9 +56,11 @@ function App () {
 
     async function handleAddSong(songData) {
       try {
-        await createSongs(songData);
-        const data = await getSongs();
-        setSongs(data);
+
+        const newSong = await createSongs(songData)
+
+        setSongs(prev => [...prev, newSong])
+
       } catch (err) {
         alert(err.message);
       }
@@ -66,10 +68,21 @@ function App () {
 
     async function handleUpdateSong(songData) {
       try{
-        await updateSong(
+        const updatedSong = await updateSong(
           editingSong.id,
           songData
         );
+
+        setSongs(prev =>
+          prev.map(song =>
+            song.id === updatedSong.id
+              ? updatedSong
+              : song
+          )
+        );
+      
+      setEditingSong(null);
+
       } catch (err) {
           alert(err.message);
       }
@@ -85,7 +98,9 @@ function App () {
         try {
           await deleteSong(id);
 
-          await loadSongs();
+          setSongs(prev =>
+            prev.filter(song => song.id !== id)
+          );
 
         } catch (err) {
           alert(err.message);

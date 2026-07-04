@@ -77,9 +77,15 @@ app.post("/api/songs", (req, res) => {
         notes
     );
 
-    res.json({
-        message: "Song added", 
-        id: result.lastInsertRowid
+    res.status.json({
+        id: result.lastInsertRowid,
+        title,
+        artist,
+        instrument,
+        status,
+        difficulty,
+        date_learned,
+        notes
     })
 })
 
@@ -139,7 +145,14 @@ app.put("/api/songs/:id", (req, res) => {
         }
 
         res.json({
-            message: "Song updated"
+            id:Number(req.params.id),
+            title,
+            artist,
+            instrument,
+            status,
+            difficulty,
+            date_learned,
+            notes
         });
 
 });
