@@ -1,3 +1,5 @@
+import "./SongDetails.css"
+
 function SongDetails({
     song,
     onEdit,
@@ -8,35 +10,47 @@ function SongDetails({
 
     return (
         <>
+        <div className="song-details">
+            
             <h2>{song.title}</h2>
+            
             <p>{song.artist}</p>
 
             <hr />
 
-            <p>
-                <strong>Instrument:</strong> {song.instrument}
-            </p>
+            <div className="detail-row">
+                <strong>Instrument</strong>
+                <span>{song.instrument}</span>
+            </div>
 
-            <p>
-                <strong>Status:</strong> {song.status}
-            </p>
+            <div className="detail-row">
+                <strong>Status</strong>
+                <span>{song.status}</span>
+            </div>
 
-            <p>
-                <strong>Difficulty:</strong> {song.difficulty}/5
-            </p>
+            <div className="detail-row">
+                <strong>Difficulty</strong>
+                <span>{song.difficulty}</span>
+            </div>
 
-            <p>
-                <strong>Date Learned:</strong>
+            <div className="detail-row">
+                <strong>Date Learned</strong>
+                <span>{song.learned}</span>
+            </div>
 
-                {song.date_learned || "not learned"}
+            <div className="detail-row">
+                <strong>Status</strong>
+                <span>{song.status}</span>
+            </div>
 
-            </p>
+            <div className="notes-section">
+                <h3>Notes</h3>
 
-            <h3>Notes</h3>
+                <div className="notes-box">
+                    {song.notes || "No notes."} 
+                </div>
 
-            <p>
-                    {song.notes || "No notes."}
-            </p>
+            </div>
 
             <div className="details-buttons">
                 <button
@@ -58,7 +72,7 @@ function SongDetails({
                 </button>
 
             </div>
-
+        </div>
         </>
     );
 
