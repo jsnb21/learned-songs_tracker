@@ -163,9 +163,9 @@ function App () {
     return (
       <div className="container">
         <header className="header">
-          <h1>Song Tracker</h1>
+          <h1>TuneBuddy</h1>
         <p>
-          Track your learning progress.
+          Your Personal Music Practice Companion
         </p>
         </header>
         
