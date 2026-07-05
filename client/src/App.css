@@ -64,6 +64,13 @@ button {
   justify-content: center;
   flex-direction: column;
   gap: 15px;
+
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, .08);
+
+  padding: 20px;
+  margin: 20px;
 }
 
 .primary-btn {

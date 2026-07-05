@@ -27,6 +27,10 @@ function App () {
       status: ""
     })
 
+    // Add Button Modal
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    // Debounce Search
     const debouncedSearch = useDebounce(filters.search, 500);
 
     async function loadSongs() {
@@ -54,6 +58,12 @@ function App () {
         debouncedSearch
     ]);
 
+    if(isModalOpen){
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
     async function handleAddSong(songData) {
       try {
 
@@ -64,6 +74,11 @@ function App () {
       } catch (err) {
         alert(err.message);
       }
+    }
+
+    async function handleEditSong(song) {
+      setEditingSong(song);
+      setIsModalOpen(true);
     }
 
     async function handleUpdateSong(songData) {
@@ -129,19 +144,40 @@ function App () {
           setFilters={setFilters}
         />
 
-        <SongForm 
-          onAddSong={handleAddSong} 
-          editingSong={editingSong}
-          onUpdateSong={handleUpdateSong}
-        />
-
+        <div className="header-actions">
+          <button 
+            className="primary-btn"
+            onClick={() => {
+              setEditingSong(null);
+              setIsModalOpen(true);
+            }}
+          >
+            + Add Song
+          </button>
+        </div>
+        { isModalOpen && (
+          <div className="modal-overlay">
+            <div className="modal">
+              <SongForm 
+                onAddSong={handleAddSong} 
+                editingSong={editingSong}
+                onUpdateSong={handleUpdateSong}
+                onClose={() => {
+                  setIsModalOpen(false);
+                  setEditingSong(null);
+                }}
+              />
+            </div>
+          </div>
+        )}
+        
         <p>
           <strong>Total songs:</strong> {songs.length}
         </p>
 
         <SongList 
           songs = {songs} 
-          onEdit = {setEditingSong}
+          onEdit = {handleEditSong}
           onDelete={handleDeleteSong}
         />
       </div>

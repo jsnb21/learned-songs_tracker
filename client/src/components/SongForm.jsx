@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import "./SongForm.css";
 
 const emptyForm = {
     title: "",
@@ -13,7 +14,8 @@ const emptyForm = {
 function SongForm({
     editingSong,
     onAddSong,
-    onUpdateSong
+    onUpdateSong,
+    onClose
 }) {
 
     const [formData, setFormData] = useState(emptyForm);
@@ -47,6 +49,7 @@ function SongForm({
         }
 
         setFormData(emptyForm);
+        onClose();
     }
 
     return (
@@ -59,7 +62,7 @@ function SongForm({
                 }
             </h2>
 
-            <div>
+            <div className="form-group">
                 <label>Title</label>
                 <br />
                 <input
@@ -71,7 +74,7 @@ function SongForm({
                 />
             </div>
 
-            <div>
+            <div className="form-group">
                 <label>Artist</label>
                 <br />
                 <input
@@ -83,7 +86,7 @@ function SongForm({
                 />
             </div>
 
-            <div>
+            <div className="form-group">
                 <label>Instrument</label>
                 <br />
                 <select
@@ -99,7 +102,7 @@ function SongForm({
                 </select>
             </div>
 
-            <div>
+            <div className="form-group">
                 <label>Status</label>
                 <br />
                 <select
@@ -113,7 +116,7 @@ function SongForm({
                 </select>
             </div>
 
-            <div>
+            <div className="form-group">
                 <label>Difficulty (1-5)</label>
                 <br />
                 <input 
@@ -126,7 +129,7 @@ function SongForm({
                 />
             </div>
 
-            <div>
+            <div className="form-group">
                 <label>Date Learned</label>
                 <br />
                 <input
@@ -137,7 +140,7 @@ function SongForm({
                 />
             </div>
 
-            <div>
+            <div className="form-group">
                 <label>Notes</label>
                 <br />
                 <textarea
@@ -148,8 +151,20 @@ function SongForm({
             </div>
 
             <br />
-
-            <button className="primary-btn" type="submit">
+            
+            <div className="form-buttons">
+                <button
+                    type="button"
+                    className="cancel-btn"
+                    onClick={onClose}
+                >
+                    Cancel
+                </button>
+            
+            <button 
+                type="submit"
+                className="submit-btn" 
+            >
                 {editingSong
                 ? "Update Song"
                 
@@ -157,6 +172,8 @@ function SongForm({
                 
                 }
             </button>
+
+            </div>
         </form>
     );
 }
