@@ -1,3 +1,5 @@
+import "./FilterBar.css"
+
 function FilterBar({ filters, setFilters }) {
     
     function handleChange(e){
@@ -10,19 +12,19 @@ function FilterBar({ filters, setFilters }) {
     }
 
     return (
-    <div className="card">
-        <h2>Filter Songs</h2>
+    <div className="filter-bar">
+        <div className="search-group">
+            <input 
+                type="text"
+                name="search"
+                placeholder="Search title or artist..."
+                value={filters.search}
+                onChange={handleChange} 
+            />
+        </div>
 
-        <input 
-            type="text"
-            name="search"
-            placeholder="Search title or artist..."
-            value={filters.search}
-            onChange={handleChange} 
-        />
-
-        { " " }
-
+        <div className="filter-controls">
+            
         <select
             name="instrument"
             value = {filters.instrument}
@@ -37,6 +39,7 @@ function FilterBar({ filters, setFilters }) {
         </select>
 
         <button
+            className="clear-btn"
             onClick={() =>
                 setFilters({
                     search: "",
@@ -47,7 +50,7 @@ function FilterBar({ filters, setFilters }) {
         >
             Clear Filters
         </button>
-
+        </div>
     </div>
     );
 
