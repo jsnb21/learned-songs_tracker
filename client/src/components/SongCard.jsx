@@ -1,38 +1,33 @@
-function SongCard({ song, onEdit, onDelete, onSelect }) {
+function SongCard({ song, onSelect }) {
     return (
         <div 
-            className="song-card"
+            className={`song-card ${song.status.toLowerCase()}`}
             onClick={() => onSelect(song)}
         >
+        
+            <div className="song-card-header">
+                <h3>{song.title}</h3>
 
-            <li style={{ marginBottom: "20px" }}>
+                <span className={`status-badge ${song.status.toLowerCase()}`}>
+                    {song.status}
+                </span>
+            </div>
 
-                <strong>{song.title}</strong>
+            <p className="song-artist">
+                {song.artist}
+            </p>
 
-                <br />
+            <div className="song-info">
+                <div>
+                    <strong>Instrument</strong>
+                    <span>{song.instrument}</span>
+                </div>
 
-                Artist: {song.artist}
-
-                <br />
-
-                Instrument: {song.instrument}
-
-                <br />
-
-                Status: {song.status}
-
-                <br />
-
-                Difficulty: {song.difficulty}/5
-
-                <br />
-
-                Date Learned: {song.data_learned || "N/A"}
-
-                <br />
-
-                Notes: {song.notes || "None"}
-            </li>
+                <div>
+                    <strong>Difficulty</strong>
+                    <span>{song.difficulty}/5</span>
+                </div>
+            </div>
 
         </div>
     )

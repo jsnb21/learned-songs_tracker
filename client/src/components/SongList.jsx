@@ -1,7 +1,7 @@
 import SongCard from "./SongCard";
 import "./SongList.css"
 
-function SongList({ songs, onEdit, onDelete, onSelect }) {
+function SongList({ songs, onSelect }) {
     if (songs.length === 0) {
         return (
             <div className="empty-state">
@@ -25,8 +25,6 @@ function SongList({ songs, onEdit, onDelete, onSelect }) {
                     <SongCard
                         key={song.id}
                         song={song}
-                        onEdit={onEdit}
-                        onDelete={onDelete}
                         onSelect={onSelect}
                     />
                 ))}

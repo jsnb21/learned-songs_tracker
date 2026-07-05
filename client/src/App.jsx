@@ -17,10 +17,6 @@ function App () {
     // Error state
     const [error, setError] = useState("");
 
-    // Editing state
-
-    const [editingSong, setEditingSong] = useState(null);
-
     // Filtering
     const [filters, setFilters] = useState({
       search: "",
@@ -28,14 +24,39 @@ function App () {
       status: ""
     })
 
-    // Add Button Modal
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modal, setModal] = useState({
+        type: null,
+        song: null
+    })
 
-    // View Modal
-    const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+    function openAddModal() {
+      setModal({
+        type: "form",
+        song: null
+      });
+    }
 
-    // Selected song for details
-    const [selectedSong, setSelectedSong] = useState(null);
+    function openEditModal(song) {
+      setModal({
+        type: "form",
+        song
+      })
+    }
+
+    function openDetailsModal(song) {
+      setModal({
+        type: "details",
+        song
+      })
+    }
+
+    function closeModal() {
+      setModal({
+        type: null,
+        song: null
+      })
+    }
+
 
     // Debounce Search
     const debouncedSearch = useDebounce(filters.search, 500);
@@ -65,39 +86,33 @@ function App () {
         debouncedSearch
     ]);
 
-    if(isModalOpen){
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    useEffect(() => {
+      document.body.style.overflow =
+        modal.type ? "hidden" : "";
 
-    function handleSelectSong(song){
-      setSelectedSong(song);
-      setIsDetailsOpen(true);
-    }
+      return () => {
+        document.body.style.overflow = "";
+      };
+    }, [modal.type]);
 
     async function handleAddSong(songData) {
       try {
 
         const newSong = await createSongs(songData)
 
-        setSongs(prev => [...prev, newSong])
+        setSongs(prev => [...prev, newSong]);
+
+        closeModal();
 
       } catch (err) {
         alert(err.message);
       }
     }
 
-    async function handleEditSong(song) {
-      setIsDetailsOpen(false);
-      setEditingSong(song);
-      setIsModalOpen(true);
-    }
-
     async function handleUpdateSong(songData) {
       try{
         const updatedSong = await updateSong(
-          editingSong.id,
+          modal.song.id,
           songData
         );
 
@@ -109,7 +124,7 @@ function App () {
           )
         );
       
-      setEditingSong(null);
+      closeModal();
 
       } catch (err) {
           alert(err.message);
@@ -129,6 +144,8 @@ function App () {
           setSongs(prev =>
             prev.filter(song => song.id !== id)
           );
+
+          closeModal();
 
         } catch (err) {
           alert(err.message);
@@ -160,52 +177,40 @@ function App () {
         <div className="header-actions">
           <button 
             className="primary-btn"
-            onClick={() => {
-              setEditingSong(null);
-              setIsModalOpen(true);
-            }}
+            onClick={openAddModal}
           >
             + Add Song
           </button>
         </div>
-        { isModalOpen && (
-          <div className="modal-overlay">
-            <div className="modal">
-              <SongForm 
-                onAddSong={handleAddSong} 
-                editingSong={editingSong}
-                onUpdateSong={handleUpdateSong}
-                onClose={() => {
-                  setIsModalOpen(false);
-                  setEditingSong(null);
-                }}
-              />
-            </div>
-          </div>
-        )}
 
-        {isDetailsOpen && (
+        <SongList
+          songs={songs}
+          onSelect={openDetailsModal}
+        />
+
+        {modal.type && (
           <div className="modal-overlay">
             <div className="modal">
-              <SongDetails
-                song={selectedSong}
-                onEdit={handleEditSong}
-                onDelete={handleDeleteSong}
-                onClose={() => {
-                  setIsDetailsOpen(false);
-                  setSelectedSong(null);
-                }}
-              />
+              {modal.type === "form" && (
+                <SongForm
+                  editingSong={modal.song}
+                  onAddSong={handleAddSong}
+                  onUpdateSong={handleUpdateSong}
+                  onClose={closeModal}
+                />
+              )}
+
+              {modal.type === "details" && (
+                <SongDetails 
+                  song={modal.song}
+                  onEdit={openEditModal}
+                  onDelete={handleDeleteSong}
+                  onClose={closeModal}
+                />
+              )}
             </div>
           </div>
         )}
-        
-        <SongList 
-          songs = {songs} 
-          onEdit={handleEditSong}
-          onDelete={handleDeleteSong}
-          onSelect = {handleSelectSong}
-        />
       </div>
     );
 }

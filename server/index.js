@@ -35,7 +35,7 @@ app.get("/api/songs", (req, res) => {
     }
 
     if (search) {
-        conditions.push("(title LIKE ? COLLATE NOCASE OR artist LIKE ?) COLLATE NOCASE");
+        conditions.push("(title LIKE ? COLLATE NOCASE OR artist LIKE ? COLLATE NOCASE)");
         values.push(`%${search}%`);
         values.push(`%${search}%`);
     }
@@ -77,7 +77,7 @@ app.post("/api/songs", (req, res) => {
         notes
     );
 
-    res.status.json({
+    res.status(201).json({
         id: result.lastInsertRowid,
         title,
         artist,
@@ -174,3 +174,10 @@ app.delete("/api/songs/:id", (req, res) => {
     });
 
 })
+
+app.use((err, req, res, next) => {
+    console.error(err);
+    res.status(500).json({
+        message: "Internal Server Error"
+    });
+});
