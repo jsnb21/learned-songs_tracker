@@ -1,7 +1,7 @@
 import SongCard from "./SongCard";
 import "./SongList.css"
 
-function SongList({ songs, onEdit, onDelete }) {
+function SongList({ songs, onEdit, onDelete, onSelect }) {
     if (songs.length === 0) {
         return (
             <div className="empty-state">
@@ -21,16 +21,15 @@ function SongList({ songs, onEdit, onDelete }) {
             </div>
 
             <div className="song-grid">
-            <ul>
                 {songs.map((song) => (
                     <SongCard
                         key={song.id}
                         song={song}
                         onEdit={onEdit}
                         onDelete={onDelete}
+                        onSelect={onSelect}
                     />
                 ))}
-            </ul>
         </div>
         </section>
     )

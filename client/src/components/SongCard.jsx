@@ -1,46 +1,40 @@
-function SongCard({ song, onEdit, onDelete }) {
+function SongCard({ song, onEdit, onDelete, onSelect }) {
     return (
-        <li style={{ marginBottom: "20px" }}>
+        <div 
+            className="song-card"
+            onClick={() => onSelect(song)}
+        >
 
-            <strong>{song.title}</strong>
+            <li style={{ marginBottom: "20px" }}>
 
-            <br />
+                <strong>{song.title}</strong>
 
-            Artist: {song.artist}
+                <br />
 
-            <br />
+                Artist: {song.artist}
 
-            Instrument: {song.instrument}
+                <br />
 
-            <br />
+                Instrument: {song.instrument}
 
-            Status: {song.status}
+                <br />
 
-            <br />
+                Status: {song.status}
 
-            Difficulty: {song.difficulty}/5
+                <br />
 
-            <br />
+                Difficulty: {song.difficulty}/5
 
-            Date Learned: {song.data_learned || "N/A"}
+                <br />
 
-            <br />
+                Date Learned: {song.data_learned || "N/A"}
 
-            Notes: {song.notes || "None"}
+                <br />
 
-            <button 
-                onClick={() => onEdit(song)}
-            >
-                Edit 
-            </button>
-            
-            <button 
-                onClick={() => onDelete(song.id)}
-            >
-                Delete 
-            </button>
+                Notes: {song.notes || "None"}
+            </li>
 
-        </li>
+        </div>
     )
 }
 

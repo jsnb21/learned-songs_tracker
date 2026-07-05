@@ -4,6 +4,7 @@ import useDebounce from "./hooks/useDebounce";
 import SongList from "./components/SongList";
 import SongForm from "./components/SongForm";
 import FilterBar from "./components/FilterBar";
+import SongDetails from "./components/SongDetails";
 
 function App () {
 
@@ -29,6 +30,12 @@ function App () {
 
     // Add Button Modal
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    // View Modal
+    const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+
+    // Selected song for details
+    const [selectedSong, setSelectedSong] = useState(null);
 
     // Debounce Search
     const debouncedSearch = useDebounce(filters.search, 500);
@@ -64,6 +71,11 @@ function App () {
       document.body.style.overflow = "";
     }
 
+    function handleSelectSong(song){
+      setSelectedSong(song);
+      setIsDetailsOpen(true);
+    }
+
     async function handleAddSong(songData) {
       try {
 
@@ -77,6 +89,7 @@ function App () {
     }
 
     async function handleEditSong(song) {
+      setIsDetailsOpen(false);
       setEditingSong(song);
       setIsModalOpen(true);
     }
@@ -170,11 +183,28 @@ function App () {
             </div>
           </div>
         )}
+
+        {isDetailsOpen && (
+          <div className="modal-overlay">
+            <div className="modal">
+              <SongDetails
+                song={selectedSong}
+                onEdit={handleEditSong}
+                onDelete={handleDeleteSong}
+                onClose={() => {
+                  setIsDetailsOpen(false);
+                  setSelectedSong(null);
+                }}
+              />
+            </div>
+          </div>
+        )}
         
         <SongList 
           songs = {songs} 
-          onEdit = {handleEditSong}
+          onEdit={handleEditSong}
           onDelete={handleDeleteSong}
+          onSelect = {handleSelectSong}
         />
       </div>
     );
