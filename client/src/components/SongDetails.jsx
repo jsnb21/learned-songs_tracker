@@ -14,7 +14,7 @@ function SongDetails({
             
             <h2>{song.title}</h2>
             
-            <p>{song.artist}</p>
+            <p className="artist">{song.artist}</p>
 
             <hr />
 
