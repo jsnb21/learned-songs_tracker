@@ -1,4 +1,12 @@
-/* Reset */
+/* 
+
+  Main Colors:
+    #F2EAE0 
+    #B4D3D9
+    #BDA6CE
+    #9B8EC7
+
+*/
 
 * {
     margin: 0;
@@ -8,8 +16,8 @@
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-    background: #f4f6f8;
-    color: #333;
+    background: whitesmoke;
+    color: black;
 }
 
 button {
@@ -43,6 +51,12 @@ button {
   color: #666;
 }
 
+.header-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 24px;
+}
+
 .card {
   background: white;
 
@@ -74,7 +88,7 @@ button {
 }
 
 .primary-btn {
-  background:#2563eb;
+  background:#BDA6CE;
 
   color: white;
 
@@ -90,5 +104,5 @@ button {
 }
 
 .primary-btn:hover {
-  background-color: #1d4ed8;
+  background-color: #9B8EC7;
 }
