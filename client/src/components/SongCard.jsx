@@ -1,3 +1,5 @@
+import "./SongCard.css"
+
 function SongCard({ song, onSelect }) {
     return (
         <div 

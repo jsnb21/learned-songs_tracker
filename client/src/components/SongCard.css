@@ -1,0 +1,111 @@
+.song-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    cursor: pointer;
+
+    border: 1px solid #e5e7eb;
+
+    box-shadow: 0 4px 12px rgba(0,0,0, 0.6);
+
+    transition: 
+        transform .2s ease,
+        box-shadow .2s ease,
+        border-color .2s ease;
+}
+
+.song-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(0,0,0, .12);
+
+    border-color: #3b82f6;
+}
+
+.song-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    gap: 10px;
+}
+
+.song-card-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #1f2937;
+    line-height: 1.3;
+}
+
+.song-artist{
+    color: #6b7280;
+    margin-top: -8px;
+    font-size: .95rem;
+}
+
+.song-info{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 14px;
+}
+
+.song-info div{
+    display: flex;
+    flex-direction: column;
+}
+
+.song-info strong{
+    font-size: .8rem;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    margin-bottom: 4px;
+}
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: .8rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.status-badge.learning {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.status-badge.mastered {
+    background: #f3f4f6;
+    color: #6b7280;
+}
+
+.song-card.learning {
+    border-left: 5px solid #3b82f6;
+}
+
+.song-card.mastered {
+    border-left: 5px solid #22c55e;
+}
+
+.song-card.rusty {
+    border-left: 5px solid #9ca3af;
+}
+
+.song-card:active {
+    transform: scale(.98);
+}
+
+@media (max-width:768px) {
+    .song-card {
+        padding: 18px;
+    }
+
+    .song-info {
+        grid-template-columns: 1fr;
+    }
+}
