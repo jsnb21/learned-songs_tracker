@@ -171,10 +171,6 @@ function App () {
           </div>
         )}
         
-        <p>
-          <strong>Total songs:</strong> {songs.length}
-        </p>
-
         <SongList 
           songs = {songs} 
           onEdit = {handleEditSong}
